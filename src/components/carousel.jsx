@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import pic6 from "../assets/lib1img.jpg";
 import { motion } from "framer-motion";
 

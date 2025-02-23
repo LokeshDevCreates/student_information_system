@@ -1,4 +1,4 @@
-import React from "react";
+
 import { User, Code, Book } from "lucide-react";
 import { motion } from "framer-motion";
 

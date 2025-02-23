@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import img1 from "../assets/courseimg1.jpg";
 import img2 from "../assets/courseimg2.jpg";
@@ -8,10 +8,8 @@ import img5 from "../assets/courseimg6.jpg";
 import img6 from "../assets/courseimg7.jpg";
 import img7 from "../assets/courseimg8.jpg";
 import img8 from "../assets/courseimg9.jpg";
-
 const PopularCourses = () => {
   const [selectedCourse, setSelectedCourse] = useState(null);
-
   const courses = [
     {
       label: ["Beginner", "Most Interested"],
@@ -78,15 +76,12 @@ const PopularCourses = () => {
         "Learn about designing integrated circuits and modern microelectronics systems.",
     },
   ];
-
   const handleCourseClick = (course) => {
     setSelectedCourse(course);
   };
-
   const handleCloseModal = () => {
     setSelectedCourse(null);
   };
-
   return (
     <motion.div
       className="bg-neutral-100 dark:bg-black py-8"

@@ -14,6 +14,7 @@ const CampusMap = ({ isDarkMode }) => {
       attribution:
         '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/">CARTO</a>',
     }).addTo(map);
+    console.log(tileLayer)
     const customIcon = L.divIcon({
       className: "custom-marker",
       html: '<div style="background: #FF5733; width: 12px; height: 12px; border-radius: 50%; border: 2px solid white;"></div>',
@@ -32,6 +33,7 @@ const CampusMap = ({ isDarkMode }) => {
     })
       .addTo(map)
       .bindPopup("Central Location");
+      console.log(marker)
     const recenterButton = L.control({ position: "bottomright" });
     recenterButton.onAdd = function () {
       const button = L.DomUtil.create("button", "recenter-button");

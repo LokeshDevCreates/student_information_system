@@ -1,12 +1,9 @@
-import React from "react";
 import pic5 from "../assets/graduation.jpg";
 import CountUp from "react-countup";
 import { useInView } from "react-intersection-observer";
 import { motion } from "framer-motion";
-
 const Number = () => {
   const { ref: statsRef, inView: statsInView } = useInView({ triggerOnce: true });
-
   const statsVariants = {
     hidden: { opacity: 0, y: 50 },
     visible: (index) => ({
@@ -19,7 +16,6 @@ const Number = () => {
       },
     }),
   };
-
   return (
     <>
       <section className="py-12 bg-gray-100 dark:bg-gray-700 transition-colors duration-500" ref={statsRef}>

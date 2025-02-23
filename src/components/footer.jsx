@@ -1,4 +1,3 @@
-import React from "react";
 import { Link } from "react-router-dom";
 import {
   FaFacebook,
@@ -73,9 +72,9 @@ const Footer = () => {
           <ul className="space-y-2 text-white text-sm">
             {[
               { to: "/", label: "Home" },
-              { to: "/campus", label: "Academics" },
-              { to: "/courses", label: "Courses" },
-              { to: "/contact", label: "Contact" },
+              { to: "/courses", label: "Academics" },
+              { to: "/campus", label: "Campus" },
+              { to: "/profile", label: "Profile" },
             ].map(({ to, label }) => (
               <AnimatedText key={label}>
                 <li>
@@ -93,10 +92,10 @@ const Footer = () => {
           </AnimatedText>
           <ul className="space-y-2 text-white text-sm">
             {[
-              { to: "/live-chart", label: "Live Chart" },
-              { to: "/faq", label: "FAQ" },
-              { to: "/support", label: "Support" },
-              { to: "/terms", label: "Terms of Services" },
+              { to: "/contact", label: "Contact" },
+              { to: "/frequent", label: "FAQ" },
+              { to: "/contact", label: "Support" },
+              { to: "/campus", label: "Terms of Services" },
             ].map(({ to, label }) => (
               <AnimatedText key={label}>
                 <li>
@@ -114,23 +113,28 @@ const Footer = () => {
           </AnimatedText>
           <ul className="space-y-2 text-white text-sm">
             {[
-              { to: "/academic-divisions", label: "Academic Divisions" },
-              { to: "/student-research", label: "Student Research" },
-              { to: "/centers-institutes", label: "Centers & Institutes" },
-              { to: "/research-facilities", label: "Research Facilities" },
+              { to: "https://www.saec.ac.in/research-h-s/", label: "Research – Humanities & Science" },
+              { to: "https://www.saec.ac.in/research-computer-science-engineering/", label: "Research – Computer Science & Engineering" },
+              { to: "https://www.saec.ac.in/others/research-2/", label: "Research Centre" },
+              { to: "https://www.saec.ac.in/research-mba/", label: "Research – MBA" },
             ].map(({ to, label }) => (
               <AnimatedText key={label}>
                 <li>
-                  <Link to={to} className="hover:text-white">
-                    {label}
-                  </Link>
+                  {to.startsWith("http") ? (
+                    <a href={to} target="_blank" rel="noopener noreferrer" className="hover:text-white">
+                      {label}
+                    </a>
+                  ) : (
+                    <Link to={to} className="hover:text-white">
+                      {label}
+                    </Link>
+                  )}
                 </li>
               </AnimatedText>
             ))}
           </ul>
         </div>
       </div>
-      <hr className="mt-10 border-gray-500" />
       <div className="text-center text-white text-xl mt-10">
         © 2025 S.A Engineering College. All rights reserved. Made by Team RML
       </div>

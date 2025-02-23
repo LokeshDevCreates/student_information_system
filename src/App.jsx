@@ -9,10 +9,9 @@ import Courses from "../src/pages/courses"
 import Attendance from "../src/pages/attendance"
 import Profile from "../src/pages/profile"
 import LogOut from "../src/pages/logout"
-import Settings from "../src/pages/settings"
 import Login from "../src/pages/login"
-
-
+import Contact from './pages/contact';
+import Frequent from './pages/frequent';
 function App() {
   return (
     <>
@@ -25,10 +24,10 @@ function App() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/logout" element={<LogOut />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/settings" element={<Settings />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/frequent" element={<Frequent />} />
         </Routes>       
        </BrowserRouter>
-       
     </>
   )
 }

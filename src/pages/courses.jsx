@@ -1,4 +1,3 @@
-import React from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import Navbar from "../components/navbar";
@@ -8,7 +7,6 @@ import img2 from "../assets/courseimage1.jpg";
 import img3 from "../assets/courseimage2.jpg";
 import PopularCourses from "../components/popularcourses";
 import Footer from "../components/footer";
-
 const Courses = () => {
   const navigate = useNavigate();
   return (
@@ -117,7 +115,6 @@ const Courses = () => {
     </div>
   );
 };
-
 const AnimatedText = ({ children, className }) => {
   return (
     <motion.div
@@ -134,5 +131,4 @@ const AnimatedText = ({ children, className }) => {
     </motion.div>
   );
 };
-
 export default Courses;

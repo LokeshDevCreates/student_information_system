@@ -1,4 +1,3 @@
-import React from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/navbar";
 import background from "../assets/stu1.jpg";
@@ -7,12 +6,9 @@ import Text from "../components/homecomp1";
 import About from "../components/about";
 import Number from "../components/number";
 import Carousel from "../components/carousel";
-import Contact from "../components/contact";
 import { motion } from "framer-motion";
-
 const Home = () => {
   const navigate = useNavigate();
-
   return (
     <>
       <div
@@ -106,11 +102,9 @@ const Home = () => {
         <About />
         <Number />
         <Carousel />
-        <Contact />
         <Footer />
       </motion.div>
     </>
   );
 };
-
 export default Home;

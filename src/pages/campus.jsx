@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import {useState} from 'react';
 import Navbar from '../components/navbar';
 import video from "../assets/saecintrobg.mp4";
 import { motion } from 'framer-motion';
@@ -56,9 +56,7 @@ const Campus = () => {
               </p>
             </section>
           </motion.section>
-
           <CampusMap isDarkMode={darkMode} />
-
           <motion.section
             className="p-8"
             initial={{ opacity: 0, y: 50 }}
@@ -96,7 +94,6 @@ const Campus = () => {
               ))}
             </div>
           </motion.section>
-
           <motion.section
             className="p-8"
             initial={{ opacity: 0, x: 50 }}
@@ -131,7 +128,6 @@ const Campus = () => {
               ))}
             </div>
           </motion.section>
-
           <motion.section
             className="p-8"
             initial={{ opacity: 0, y: 50 }}

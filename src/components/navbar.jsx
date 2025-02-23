@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { X, User, Menu, Sun, Moon } from "lucide-react";
-
 const Navbar = ({ textSize = "text-base", textColor = "text-black", onDarkModeToggle }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [darkMode, setDarkMode] = useState(() => {
@@ -10,7 +9,15 @@ const Navbar = ({ textSize = "text-base", textColor = "text-black", onDarkModeTo
       ? JSON.parse(savedMode)
       : window.matchMedia("(prefers-color-scheme: dark)").matches;
   });
-
+  const [isLoggedIn, setIsLoggedIn] = useState(() => {
+    const user = localStorage.getItem("user");
+    return !!user;
+  });
+  const navigate = useNavigate();
+  useEffect(() => {
+    const user = localStorage.getItem("user");
+    setIsLoggedIn(!!user);
+  }, []);
   useEffect(() => {
     if (darkMode) {
       document.documentElement.classList.add("dark");
@@ -21,21 +28,22 @@ const Navbar = ({ textSize = "text-base", textColor = "text-black", onDarkModeTo
     }
     localStorage.setItem("darkMode", JSON.stringify(darkMode));
     if (onDarkModeToggle) {
-      onDarkModeToggle(darkMode); // Notify parent about the dark mode state
+      onDarkModeToggle(darkMode); 
     }
   }, [darkMode, onDarkModeToggle]);
-
   const [isScrolled, setIsScrolled] = useState(false);
-
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 0);
     };
-
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    setIsLoggedIn(false);
+    navigate("/login");
+  };
   return (
     <nav
       className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
@@ -47,7 +55,7 @@ const Navbar = ({ textSize = "text-base", textColor = "text-black", onDarkModeTo
           <div className="flex flex-col text-left cursor-pointer">
             <AnimatedText
               className={` font-bold text-2xl sm:text-3xl md:pl-1 ${
-                darkMode ? "text-white" : "text-black"
+                darkMode ? "text-black" : "text-slate-900"
               }`}
             >
               S.A Engineering College
@@ -57,7 +65,6 @@ const Navbar = ({ textSize = "text-base", textColor = "text-black", onDarkModeTo
             </AnimatedText>
           </div>
         </div>
-
         <div
           className={`hidden md:flex space-x-6 ${textSize} ${textColor}${
             darkMode ? "text-white" : "text-black"
@@ -78,19 +85,29 @@ const Navbar = ({ textSize = "text-base", textColor = "text-black", onDarkModeTo
           <AnimatedLink to="/profile" textSize={textSize}>
             Profile
           </AnimatedLink>
-          <AnimatedLink to="/settings" textSize={textSize}>
-            Settings
+          <AnimatedLink to="/contact" textSize={textSize}>
+            Contact
           </AnimatedLink>
         </div>
-
         <div className="hidden md:flex items-center space-x-6">
-          <AnimatedLink to="/login">
-            <div className="flex items-center">
-              <User className="w-6 h-6" />
-              <span className="ml-1">Log In</span>
-            </div>
-          </AnimatedLink>
-
+          {!isLoggedIn ? (
+            <AnimatedLink to="/login">
+              <div className="flex items-center">
+                <User className="w-6 h-6" />
+                <span className="ml-1">Log In</span>
+              </div>
+            </AnimatedLink>
+          ) : (
+            <AnimatedLink to="/logout">
+              <button
+                className="text-red-600 hover:text-red-800 flex items-center space-x-1 focus:outline-none"
+                aria-label="Log Out"
+              >
+                <User className="w-6 h-6" />
+                <span>Logout</span>
+              </button>
+            </AnimatedLink>
+          )}
           <button
             onClick={() => setDarkMode(!darkMode)}
             className="focus:outline-none cursor-pointer"
@@ -103,7 +120,6 @@ const Navbar = ({ textSize = "text-base", textColor = "text-black", onDarkModeTo
             )}
           </button>
         </div>
-
         <div className="md:hidden flex items-center">
           <button
             onClick={() => setMenuOpen(!menuOpen)}
@@ -118,9 +134,8 @@ const Navbar = ({ textSize = "text-base", textColor = "text-black", onDarkModeTo
           </button>
         </div>
       </div>
-
       {menuOpen && (
-        <div className="text-xl md:hidden fixed inset-0 bg-orange-400 text-white flex flex-col items-center justify-center space-y-8 dark:bg-white dark:text-white ">
+        <div className="text-xl md:hidden fixed inset-0 bg-orange-400 text-white flex flex-col items-center justify-center space-y-8 dark:bg-white dark:text-white">
           <button
             onClick={() => setMenuOpen(false)}
             className="text-black absolute top-4 right-4 hover:text-gray-400"
@@ -142,18 +157,26 @@ const Navbar = ({ textSize = "text-base", textColor = "text-black", onDarkModeTo
           <AnimatedLink to="/profile" onClick={() => setMenuOpen(false)}>
             Profile
           </AnimatedLink>
-          <AnimatedLink to="/settings" onClick={() => setMenuOpen(false)}>
-            Settings
+          <AnimatedLink to="/contact" onClick={() => setMenuOpen(false)}>
+            Contact
           </AnimatedLink>
-          <AnimatedLink to="/login" onClick={() => setMenuOpen(false)}>
-            Log In
-          </AnimatedLink>
+          {!isLoggedIn ? (
+            <AnimatedLink to="/login" onClick={() => setMenuOpen(false)}>
+              Log In
+            </AnimatedLink>
+          ) : (
+            <button
+              onClick={handleLogout}
+              className="text-red-600 hover:text-red-800"
+            >
+              Logout
+            </button>
+          )}
         </div>
       )}
     </nav>
   );
 };
-
 const AnimatedLink = ({ to, children, onClick, textSize }) => {
   return (
     <Link
@@ -166,7 +189,6 @@ const AnimatedLink = ({ to, children, onClick, textSize }) => {
     </Link>
   );
 };
-
 const AnimatedText = ({ children, className }) => {
   return (
     <div className={`relative group ${className}`}>
@@ -175,5 +197,4 @@ const AnimatedText = ({ children, className }) => {
     </div>
   );
 };
-
 export default Navbar;
