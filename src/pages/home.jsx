@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { useRef, useState } from "react";
 import Navbar from "../components/navbar";
 import background from "../assets/stu1.jpg";
 import Footer from "../components/footer";
@@ -6,9 +7,54 @@ import Text from "../components/homecomp1";
 import About from "../components/about";
 import Number from "../components/number";
 import Carousel from "../components/carousel";
+import emailjs from "@emailjs/browser";
 import { motion } from "framer-motion";
+
 const Home = () => {
   const navigate = useNavigate();
+  const form = useRef(null);
+  const [alertMessage, setAlertMessage] = useState("");
+  const [showAlert, setShowAlert] = useState(false);
+  const sendEmail = (e) => {
+    e.preventDefault();
+    if (form.current) {
+      const formData = new FormData(form.current);
+      const userName = formData.get("user_name");
+      const userEmail = formData.get("user_email");
+      if (!userEmail || !userName) {
+        setAlertMessage("Please enter both your name and email.");
+        setShowAlert(true);
+        setTimeout(() => setShowAlert(false), 3000);
+        return;
+      }
+      emailjs
+        .send(
+          "service_k0g0wck",
+          "template_0jiks7q",
+          {
+            user_name: userName,
+            user_email: userEmail,
+          },
+          "MZUmGUqXRnYBE66DZ"
+        )
+        .then(
+          (result) => {
+            console.log("Email sent to student:", result.text);
+            setAlertMessage(`Your Application is being processed, please check out your mail for more details!`);
+            setShowAlert(true);
+            setTimeout(() => setShowAlert(false), 3000);
+            form.current.reset();
+          },
+          (error) => {
+            console.error("Failed to send email:", error.text);
+            setAlertMessage("Error in sending email. Please try again.");
+            setShowAlert(true);
+            setTimeout(() => setShowAlert(false), 3000);
+          }
+        );
+    }
+  };
+
   return (
     <>
       <div
@@ -18,6 +64,17 @@ const Home = () => {
         <div className="relative z-10">
           <Navbar textSize="text-xl" textColor="text-white" />
         </div>
+        {showAlert && (
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.5, ease: "easeInOut" }}
+              className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 bg-orange-500 text-white py-4 px-6 rounded-lg shadow-lg text-center"
+            >
+              {alertMessage}
+            </motion.div>
+          )}
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
@@ -61,14 +118,16 @@ const Home = () => {
           <p className="text-sm font-light text-gray-500 dark:text-gray-300 mb-6 text-center">
             Make it More Simple !!
           </p>
-          <form className="space-y-4">
+          <form ref={form} onSubmit={sendEmail} className="space-y-4">
             <motion.div
               whileHover={{ scale: 1.05 }}
               className="transition-transform duration-300"
             >
               <input
                 type="text"
+                name="user_name"
                 placeholder="Your Name"
+                required
                 className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-orange-500 focus:outline-none bg-white dark:bg-gray-800 text-black dark:text-white"
               />
             </motion.div>
@@ -78,7 +137,9 @@ const Home = () => {
             >
               <input
                 type="email"
+                name="user_email"
                 placeholder="Your Email"
+                required
                 className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-orange-500 focus:outline-none bg-white dark:bg-gray-800 text-black dark:text-white"
               />
             </motion.div>
@@ -107,4 +168,5 @@ const Home = () => {
     </>
   );
 };
+
 export default Home;

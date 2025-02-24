@@ -61,12 +61,12 @@ const Courses = () => {
             Build a personalized library for your career and personal growth. From foundational concepts to advanced expertise, ignite your potential.
           </p>
           <motion.button
-            onClick={() => navigate("/campus")}
+            onClick={() => navigate("/contact")}
             className="mt-6 px-6 py-3 bg-orange-600 text-white rounded-lg hover:bg-orange-400 shadow-lg transition-all duration-300"
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.95 }}
           >
-            View All Courses
+            Get More Info
           </motion.button>
         </div>
         <motion.div

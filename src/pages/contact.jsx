@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import emailjs from "@emailjs/browser";
 import Navbar from "../components/navbar";
 import Footer from "../components/footer";
@@ -12,30 +12,40 @@ import {
   Instagram,
 } from "lucide-react";
 import { motion } from "framer-motion";
+
 const Contact = () => {
   const form = useRef(null);
+  const [alertMessage, setAlertMessage] = useState("");
+  const [showAlert, setShowAlert] = useState(false);
+
   const sendEmail = (e) => {
     e.preventDefault();
     if (form.current) {
       emailjs
         .sendForm(
-          "service_4p9coge",
+          "service_lpsw4pe",
           "template_dwska5i",
           form.current,
           "MZUmGUqXRnYBE66DZ"
         )
         .then(
           (result) => {
-            console.log(result.text);
-            console.log("Message sent");
+            console.log("Message sent:", result.text);
+            setAlertMessage("Message sent successfully, we will contact you shortly!");
+            setShowAlert(true);
+            setTimeout(() => setShowAlert(false), 3000); 
             form.current.reset();
           },
           (error) => {
-            console.log(error.text);
+            console.error("Error:", error.text);
+            setAlertMessage("Failed to send the message. Please try again.");
+            setShowAlert(true);
+            setTimeout(() => setShowAlert(false), 3000);
           }
         );
     }
   };
+
   return (
     <>
       <div className="relative z-10">
@@ -54,9 +64,9 @@ const Contact = () => {
               animate={{ scale: 1 }}
               transition={{ duration: 1, ease: "easeInOut", delay: 0.2 }}
             >
-                <AnimatedText>
-                   <h1 className="text-4xl font-bold mb-4">Contact us</h1>
-                </AnimatedText>  
+              <AnimatedText>
+                <h1 className="text-4xl font-bold mb-4">Contact us</h1>
+              </AnimatedText>
               <p className="text-lg mb-8">
                 Leave your email and we will get back to you within 24 hours.
               </p>
@@ -71,7 +81,10 @@ const Contact = () => {
                 </li>
                 <li className="flex items-center">
                   <MapPin className="mr-3" />
-                  <span>Poonamallee-Avadi Road, Thiruverkadu, Chennai-600077. TamilNadu. India</span>
+                  <span>
+                    Poonamallee-Avadi Road, Thiruverkadu, Chennai-600077.
+                    TamilNadu. India
+                  </span>
                 </li>
                 <li className="flex items-center">
                   <Clock className="mr-3" />
@@ -181,17 +194,30 @@ const Contact = () => {
             </motion.form>
           </div>
         </motion.div>
+        {showAlert && (
+          <motion.div
+            initial={{ opacity: 0, y: -50 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -50 }}
+            transition={{ duration: 0.5, ease: "easeInOut" }}
+            className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 bg-orange-500 text-white py-4 px-6 rounded-lg shadow-lg text-center"
+          >
+            {alertMessage}
+          </motion.div>
+        )}
       </div>
       <Footer />
     </>
   );
 };
+
 const AnimatedText = ({ children, className }) => {
-    return (
-      <div className={`relative group ${className}`}>
-        {children}
-        <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-white transition-all duration-500 group-hover:w-44"></span>
-      </div>
-    );
-  };
+  return (
+    <div className={`relative group ${className}`}>
+      {children}
+      <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-white transition-all duration-500 group-hover:w-44"></span>
+    </div>
+  );
+};
+
 export default Contact;
